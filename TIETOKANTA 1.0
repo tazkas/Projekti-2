@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 31.01.2017 klo 19:11
--- Palvelimen versio: 5.7.14
+-- Generation Time: Feb 01, 2017 at 07:28 AM
+-- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -17,17 +17,19 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `laiterekisteri`
+-- Database: `register`
 --
 
 -- --------------------------------------------------------
 
 --
--- Näkymän vararakenne `all_devices`
+-- Stand-in structure for view `all_devices`
 -- (See below for the actual view)
 --
 CREATE TABLE `all_devices` (
-`device_ean` varchar(100)
+`id` int(11)
+,`owner_id` int(11)
+,`device_ean` varchar(100)
 ,`device_type` varchar(100)
 ,`description` varchar(1000)
 ,`state` varchar(20)
@@ -36,7 +38,7 @@ CREATE TABLE `all_devices` (
 -- --------------------------------------------------------
 
 --
--- Rakenne taululle `device`
+-- Table structure for table `device`
 --
 
 CREATE TABLE `device` (
@@ -51,7 +53,7 @@ CREATE TABLE `device` (
 -- --------------------------------------------------------
 
 --
--- Rakenne taululle `history`
+-- Table structure for table `history`
 --
 
 CREATE TABLE `history` (
@@ -67,7 +69,7 @@ CREATE TABLE `history` (
 -- --------------------------------------------------------
 
 --
--- Rakenne taululle `loan`
+-- Table structure for table `loan`
 --
 
 CREATE TABLE `loan` (
@@ -83,11 +85,12 @@ CREATE TABLE `loan` (
 -- --------------------------------------------------------
 
 --
--- Näkymän vararakenne `loan_history`
+-- Stand-in structure for view `loan_history`
 -- (See below for the actual view)
 --
 CREATE TABLE `loan_history` (
-`person_id` varchar(100)
+`id` int(11)
+,`person_id` varchar(100)
 ,`start_date` datetime
 ,`end_date` datetime
 ,`return_date` datetime
@@ -97,7 +100,7 @@ CREATE TABLE `loan_history` (
 -- --------------------------------------------------------
 
 --
--- Rakenne taululle `owner`
+-- Table structure for table `owner`
 --
 
 CREATE TABLE `owner` (
@@ -111,11 +114,12 @@ CREATE TABLE `owner` (
 -- --------------------------------------------------------
 
 --
--- Näkymän vararakenne `owners`
+-- Stand-in structure for view `owners`
 -- (See below for the actual view)
 --
 CREATE TABLE `owners` (
-`firstname` varchar(100)
+`id` int(11)
+,`firstname` varchar(100)
 ,`lastname` varchar(100)
 ,`phone` varchar(20)
 ,`email` varchar(100)
@@ -124,11 +128,12 @@ CREATE TABLE `owners` (
 -- --------------------------------------------------------
 
 --
--- Näkymän vararakenne `pending_reservations`
+-- Stand-in structure for view `pending_reservations`
 -- (See below for the actual view)
 --
 CREATE TABLE `pending_reservations` (
-`device_id` int(11)
+`id` int(11)
+,`device_id` int(11)
 ,`person_id` varchar(100)
 ,`start_date` datetime
 ,`end_date` datetime
@@ -138,7 +143,7 @@ CREATE TABLE `pending_reservations` (
 -- --------------------------------------------------------
 
 --
--- Rakenne taululle `reservation`
+-- Table structure for table `reservation`
 --
 
 CREATE TABLE `reservation` (
@@ -153,11 +158,13 @@ CREATE TABLE `reservation` (
 -- --------------------------------------------------------
 
 --
--- Näkymän vararakenne `under_loan`
+-- Stand-in structure for view `under_loan`
 -- (See below for the actual view)
 --
 CREATE TABLE `under_loan` (
-`person_id` varchar(100)
+`id` int(11)
+,`device_id` int(11)
+,`person_id` varchar(100)
 ,`loan_date` datetime
 ,`end_date` datetime
 ,`return_date` datetime
@@ -167,47 +174,47 @@ CREATE TABLE `under_loan` (
 -- --------------------------------------------------------
 
 --
--- Näkymän rakenne `all_devices`
+-- Structure for view `all_devices`
 --
 DROP TABLE IF EXISTS `all_devices`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `all_devices`  AS  select `device`.`device_ean` AS `device_ean`,`device`.`device_type` AS `device_type`,`device`.`description` AS `description`,`device`.`state` AS `state` from `device` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `all_devices`  AS  select `device`.`id` AS `id`,`device`.`owner_id` AS `owner_id`,`device`.`device_ean` AS `device_ean`,`device`.`device_type` AS `device_type`,`device`.`description` AS `description`,`device`.`state` AS `state` from `device` ;
 
 -- --------------------------------------------------------
 
 --
--- Näkymän rakenne `loan_history`
+-- Structure for view `loan_history`
 --
 DROP TABLE IF EXISTS `loan_history`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `loan_history`  AS  select `history`.`person_id` AS `person_id`,`history`.`start_date` AS `start_date`,`history`.`end_date` AS `end_date`,`history`.`return_date` AS `return_date`,`history`.`comments` AS `comments` from `history` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `loan_history`  AS  select `history`.`id` AS `id`,`history`.`person_id` AS `person_id`,`history`.`start_date` AS `start_date`,`history`.`end_date` AS `end_date`,`history`.`return_date` AS `return_date`,`history`.`comments` AS `comments` from `history` ;
 
 -- --------------------------------------------------------
 
 --
--- Näkymän rakenne `owners`
+-- Structure for view `owners`
 --
 DROP TABLE IF EXISTS `owners`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `owners`  AS  select `owner`.`firstname` AS `firstname`,`owner`.`lastname` AS `lastname`,`owner`.`phone` AS `phone`,`owner`.`email` AS `email` from `owner` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `owners`  AS  select `owner`.`id` AS `id`,`owner`.`firstname` AS `firstname`,`owner`.`lastname` AS `lastname`,`owner`.`phone` AS `phone`,`owner`.`email` AS `email` from `owner` ;
 
 -- --------------------------------------------------------
 
 --
--- Näkymän rakenne `pending_reservations`
+-- Structure for view `pending_reservations`
 --
 DROP TABLE IF EXISTS `pending_reservations`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pending_reservations`  AS  select `reservation`.`device_id` AS `device_id`,`reservation`.`person_id` AS `person_id`,`reservation`.`start_date` AS `start_date`,`reservation`.`end_date` AS `end_date`,`reservation`.`info` AS `info` from `reservation` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pending_reservations`  AS  select `reservation`.`id` AS `id`,`reservation`.`device_id` AS `device_id`,`reservation`.`person_id` AS `person_id`,`reservation`.`start_date` AS `start_date`,`reservation`.`end_date` AS `end_date`,`reservation`.`info` AS `info` from `reservation` ;
 
 -- --------------------------------------------------------
 
 --
--- Näkymän rakenne `under_loan`
+-- Structure for view `under_loan`
 --
 DROP TABLE IF EXISTS `under_loan`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `under_loan`  AS  select `loan`.`person_id` AS `person_id`,`loan`.`loan_date` AS `loan_date`,`loan`.`end_date` AS `end_date`,`loan`.`return_date` AS `return_date`,`loan`.`info` AS `info` from `loan` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `under_loan`  AS  select `loan`.`id` AS `id`,`loan`.`device_id` AS `device_id`,`loan`.`person_id` AS `person_id`,`loan`.`loan_date` AS `loan_date`,`loan`.`end_date` AS `end_date`,`loan`.`return_date` AS `return_date`,`loan`.`info` AS `info` from `loan` ;
 
 --
 -- Indexes for dumped tables
