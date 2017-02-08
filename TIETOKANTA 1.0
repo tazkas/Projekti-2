@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2017 at 09:12 AM
+-- Generation Time: Feb 08, 2017 at 08:31 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -19,25 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `register`
 --
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `all_devices`
--- (See below for the actual view)
---
-CREATE TABLE `all_devices` (
-`id` int(11)
-,`device_ean` varchar(100)
-,`device_type` varchar(100)
-,`model` varchar(50)
-,`description` varchar(1000)
-,`state` varchar(20)
-,`image` varchar(100)
-,`owner_id` int(11)
-,`owner_firstname` varchar(100)
-,`owner_lastname` varchar(100)
-);
 
 -- --------------------------------------------------------
 
@@ -82,23 +63,7 @@ CREATE TABLE `device` (
 --
 
 INSERT INTO `device` (`id`, `device_ean`, `device_type`, `model`, `category`, `description`, `state`, `location`, `owner_id`, `image`) VALUES
-(1, 'K-a233s', 'kannettava', 'Lenovo Y700', 1, 'intel nvidia', 'VAPAA', NULL, 1, 'kuva');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `history`
---
-
-CREATE TABLE `history` (
-  `id` int(11) NOT NULL,
-  `device_id` varchar(100) DEFAULT NULL,
-  `person_id` varchar(100) DEFAULT NULL,
-  `start_date` datetime DEFAULT NULL,
-  `end_date` datetime DEFAULT NULL,
-  `return_date` datetime DEFAULT NULL,
-  `comments` varchar(1000) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+(1, 'K-a233s', 'kannettava', 'Lenovo Y700', 1, 'intel nvidia', 'VAPAA', 1, 1, 'kuva');
 
 -- --------------------------------------------------------
 
@@ -109,27 +74,16 @@ CREATE TABLE `history` (
 CREATE TABLE `loan` (
   `id` int(11) NOT NULL,
   `device_id` int(11) NOT NULL,
-  `person_id` varchar(100) NOT NULL,
+  `owner_id` int(11) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
   `loan_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `return_date` datetime DEFAULT NULL,
-  `info` varchar(1000) DEFAULT NULL
+  `location` int(11) NOT NULL,
+  `info` varchar(1000) DEFAULT NULL,
+  `comment` varchar(1000) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `loan_history`
--- (See below for the actual view)
---
-CREATE TABLE `loan_history` (
-`id` int(11)
-,`person_id` varchar(100)
-,`start_date` datetime
-,`end_date` datetime
-,`return_date` datetime
-,`comments` varchar(1000)
-);
 
 -- --------------------------------------------------------
 
@@ -139,10 +93,16 @@ CREATE TABLE `loan_history` (
 
 CREATE TABLE `location` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
   `postcode` varchar(20) NOT NULL,
-  `address` varchar(100) NOT NULL
+  `address` varchar(200) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `location`
+--
+
+INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
+(1, '70000', 'Opistotie 2, Kuopio');
 
 -- --------------------------------------------------------
 
@@ -164,112 +124,7 @@ CREATE TABLE `owner` (
 --
 
 INSERT INTO `owner` (`id`, `firstname`, `lastname`, `phone`, `email`, `location`) VALUES
-(1, 'pasi', 'viheraho', '232343232', 'pasi.viheraho@suomi.net', NULL);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `owners`
--- (See below for the actual view)
---
-CREATE TABLE `owners` (
-`id` int(11)
-,`firstname` varchar(100)
-,`lastname` varchar(100)
-,`phone` varchar(20)
-,`email` varchar(100)
-);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `pending_reservations`
--- (See below for the actual view)
---
-CREATE TABLE `pending_reservations` (
-`id` int(11)
-,`device_id` int(11)
-,`person_id` varchar(100)
-,`start_date` datetime
-,`end_date` datetime
-,`info` varchar(1000)
-);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reservation`
---
-
-CREATE TABLE `reservation` (
-  `id` int(11) NOT NULL,
-  `device_id` int(11) NOT NULL,
-  `person_id` varchar(100) NOT NULL,
-  `start_date` datetime NOT NULL,
-  `end_date` datetime NOT NULL,
-  `info` varchar(1000) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `under_loan`
--- (See below for the actual view)
---
-CREATE TABLE `under_loan` (
-`id` int(11)
-,`device_id` int(11)
-,`person_id` varchar(100)
-,`loan_date` datetime
-,`end_date` datetime
-,`return_date` datetime
-,`info` varchar(1000)
-);
-
--- --------------------------------------------------------
-
---
--- Structure for view `all_devices`
---
-DROP TABLE IF EXISTS `all_devices`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `all_devices`  AS  select `device`.`id` AS `id`,`device`.`device_ean` AS `device_ean`,`device`.`device_type` AS `device_type`,`device`.`model` AS `model`,`device`.`description` AS `description`,`device`.`state` AS `state`,`device`.`image` AS `image`,`device`.`owner_id` AS `owner_id`,`owner`.`firstname` AS `owner_firstname`,`owner`.`lastname` AS `owner_lastname` from ((`device` join `owner` on((`device`.`owner_id` = `owner`.`id`))) join `categories` on((`device`.`category` = `categories`.`id`))) ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `loan_history`
---
-DROP TABLE IF EXISTS `loan_history`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `loan_history`  AS  select `history`.`id` AS `id`,`history`.`person_id` AS `person_id`,`history`.`start_date` AS `start_date`,`history`.`end_date` AS `end_date`,`history`.`return_date` AS `return_date`,`history`.`comments` AS `comments` from `history` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `owners`
---
-DROP TABLE IF EXISTS `owners`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `owners`  AS  select `owner`.`id` AS `id`,`owner`.`firstname` AS `firstname`,`owner`.`lastname` AS `lastname`,`owner`.`phone` AS `phone`,`owner`.`email` AS `email` from `owner` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `pending_reservations`
---
-DROP TABLE IF EXISTS `pending_reservations`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pending_reservations`  AS  select `reservation`.`id` AS `id`,`reservation`.`device_id` AS `device_id`,`reservation`.`person_id` AS `person_id`,`reservation`.`start_date` AS `start_date`,`reservation`.`end_date` AS `end_date`,`reservation`.`info` AS `info` from `reservation` ;
-
--- --------------------------------------------------------
-
---
--- Structure for view `under_loan`
---
-DROP TABLE IF EXISTS `under_loan`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `under_loan`  AS  select `loan`.`id` AS `id`,`loan`.`device_id` AS `device_id`,`loan`.`person_id` AS `person_id`,`loan`.`loan_date` AS `loan_date`,`loan`.`end_date` AS `end_date`,`loan`.`return_date` AS `return_date`,`loan`.`info` AS `info` from `loan` ;
+(1, 'pasi', 'viheraho', '232343232', 'pasi.viheraho@suomi.net', '1');
 
 --
 -- Indexes for dumped tables
@@ -286,29 +141,25 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `device`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_ean` (`device_ean`),
   ADD KEY `owner_id_fk` (`owner_id`),
   ADD KEY `category_id_fk` (`category`),
   ADD KEY `device_location_fk` (`location`);
-
---
--- Indexes for table `history`
---
-ALTER TABLE `history`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `history_device_fk` (`device_id`);
 
 --
 -- Indexes for table `loan`
 --
 ALTER TABLE `loan`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `loan_device_fk` (`device_id`);
+  ADD KEY `loan_device_fk` (`device_id`),
+  ADD KEY `loan_location_fk` (`location`);
 
 --
 -- Indexes for table `location`
 --
 ALTER TABLE `location`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `address` (`address`);
 
 --
 -- Indexes for table `owner`
@@ -316,13 +167,6 @@ ALTER TABLE `location`
 ALTER TABLE `owner`
   ADD PRIMARY KEY (`id`),
   ADD KEY `location_fk` (`location`);
-
---
--- Indexes for table `reservation`
---
-ALTER TABLE `reservation`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `reservation_device_fk` (`device_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -339,11 +183,6 @@ ALTER TABLE `categories`
 ALTER TABLE `device`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `history`
---
-ALTER TABLE `history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `loan`
 --
 ALTER TABLE `loan`
@@ -352,17 +191,12 @@ ALTER TABLE `loan`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `owner`
 --
 ALTER TABLE `owner`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `reservation`
---
-ALTER TABLE `reservation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
