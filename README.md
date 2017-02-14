@@ -13,5 +13,7 @@ Ultimaattinen laiterekisteri
   <li>12.04 - 03.05</li>
 </ol>
 
+<br/>
+
 <b>HUOM!</b>
 12.04.2017 - Projektin "loppuesitys" englannin kielen opettajalle
