@@ -17,3 +17,24 @@ Ultimaattinen laiterekisteri
 
 <b>HUOM!</b>
 12.04.2017 - Projektin "loppuesitys" englannin kielen opettajalle
+
+<br/>
+<br/>
+
+<b>Laiterekisterin karkea kuvaus</b>
+
+-         Objektien (laite/softa/mitä vaan) CRUD
+
+o   Muutamia pakollisia tietoja kaikille: nimi, kuvaus, omistaja, kotipaikka, julkinen/privaatti -laite
+
+o   Mahdollisuus lisätiedoille
+
+o   Tapahtumahistoria (huollot jne.)
+
+-         Samaan sovellukseen jokaiselle laitteelle kalenteri, josta näkee varaustilanteen, voi varata
+
+o   Syntyy lainaushistoria
+
+-         Selkeä näkymä, jossa näkyy palautusta odottavat (myöhästyneet) laitteet
+
+-         Käyttöoikeudet, kaikki ei saa muokata laitteita, kaikki saanee nähdä
