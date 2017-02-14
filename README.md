@@ -1,6 +1,8 @@
 # Projekti-2
 Ultimaattinen laiterekisteri
 
+<br/>
+
 <b>Sprintit</b>
 <ol>
   <li>01.02 - 15.02</li>
@@ -11,4 +13,5 @@ Ultimaattinen laiterekisteri
   <li>12.04 - 03.05</li>
 </ol>
 
+<b>HUOM!</b>
 12.04.2017 - Projektin "loppuesitys" englannin kielen opettajalle
