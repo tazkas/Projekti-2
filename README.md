@@ -23,7 +23,7 @@ Ultimaattinen laiterekisteri
 
 <b>Laiterekisterin karkea kuvaus</b>
 
--         Objektien (laite/softa/mitä vaan) CRUD
+o   Objektien (laite/softa/mitä vaan) CRUD
 
 o   Muutamia pakollisia tietoja kaikille: nimi, kuvaus, omistaja, kotipaikka, julkinen/privaatti -laite
 
@@ -31,10 +31,10 @@ o   Mahdollisuus lisätiedoille
 
 o   Tapahtumahistoria (huollot jne.)
 
--         Samaan sovellukseen jokaiselle laitteelle kalenteri, josta näkee varaustilanteen, voi varata
+o   Samaan sovellukseen jokaiselle laitteelle kalenteri, josta näkee varaustilanteen, voi varata
 
 o   Syntyy lainaushistoria
 
--         Selkeä näkymä, jossa näkyy palautusta odottavat (myöhästyneet) laitteet
+o   Selkeä näkymä, jossa näkyy palautusta odottavat (myöhästyneet) laitteet
 
--         Käyttöoikeudet, kaikki ei saa muokata laitteita, kaikki saanee nähdä
+o   Käyttöoikeudet, kaikki ei saa muokata laitteita, kaikki saanee nähdä
