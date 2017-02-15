@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2017 at 08:31 AM
+-- Generation Time: Feb 15, 2017 at 07:12 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -23,25 +23,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `image` varchar(100) NOT NULL,
-  `name` varchar(40) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `image`, `name`) VALUES
-(1, 'kuva', 'kannettava');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `device`
 --
 
@@ -55,86 +36,21 @@ CREATE TABLE `device` (
   `state` varchar(20) DEFAULT NULL,
   `location` int(11) DEFAULT NULL,
   `owner_id` int(11) NOT NULL,
-  `image` varchar(100) NOT NULL
+  `image` varchar(100) NOT NULL,
+  `last_changed` datetime DEFAULT NULL,
+  `changer_owner_id` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `device`
 --
 
-INSERT INTO `device` (`id`, `device_ean`, `device_type`, `model`, `category`, `description`, `state`, `location`, `owner_id`, `image`) VALUES
-(1, 'K-a233s', 'kannettava', 'Lenovo Y700', 1, 'intel nvidia', 'VAPAA', 1, 1, 'kuva');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `loan`
---
-
-CREATE TABLE `loan` (
-  `id` int(11) NOT NULL,
-  `device_id` int(11) NOT NULL,
-  `owner_id` int(11) NOT NULL,
-  `type` varchar(100) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `loan_date` datetime DEFAULT NULL,
-  `end_date` datetime DEFAULT NULL,
-  `return_date` datetime DEFAULT NULL,
-  `location` int(11) NOT NULL,
-  `info` varchar(1000) DEFAULT NULL,
-  `comment` varchar(1000) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `location`
---
-
-CREATE TABLE `location` (
-  `id` int(11) NOT NULL,
-  `postcode` varchar(20) NOT NULL,
-  `address` varchar(200) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `location`
---
-
-INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
-(1, '70000', 'Opistotie 2, Kuopio');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `owner`
---
-
-CREATE TABLE `owner` (
-  `id` int(11) NOT NULL,
-  `firstname` varchar(100) NOT NULL,
-  `lastname` varchar(100) NOT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `location` varchar(100) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `owner`
---
-
-INSERT INTO `owner` (`id`, `firstname`, `lastname`, `phone`, `email`, `location`) VALUES
-(1, 'pasi', 'viheraho', '232343232', 'pasi.viheraho@suomi.net', '1');
+INSERT INTO `device` (`id`, `device_ean`, `device_type`, `model`, `category`, `description`, `state`, `location`, `owner_id`, `image`, `last_changed`, `changer_owner_id`) VALUES
+(1, 'K-a233s', 'kannettava', 'Lenovo Y700', 1, 'intel nvidia', 'VAPAA', 1, 1, 'kuva', NULL, 0);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `device`
@@ -144,58 +60,17 @@ ALTER TABLE `device`
   ADD UNIQUE KEY `device_ean` (`device_ean`),
   ADD KEY `owner_id_fk` (`owner_id`),
   ADD KEY `category_id_fk` (`category`),
-  ADD KEY `device_location_fk` (`location`);
-
---
--- Indexes for table `loan`
---
-ALTER TABLE `loan`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `loan_device_fk` (`device_id`),
-  ADD KEY `loan_location_fk` (`location`);
-
---
--- Indexes for table `location`
---
-ALTER TABLE `location`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `address` (`address`);
-
---
--- Indexes for table `owner`
---
-ALTER TABLE `owner`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `location_fk` (`location`);
+  ADD KEY `device_location_fk` (`location`),
+  ADD KEY `change_owner_fk` (`changer_owner_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
 -- AUTO_INCREMENT for table `device`
 --
 ALTER TABLE `device`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `loan`
---
-ALTER TABLE `loan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `location`
---
-ALTER TABLE `location`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `owner`
---
-ALTER TABLE `owner`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
