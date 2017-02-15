@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Viikko kalenteri</title>
+	<link rel="stylesheet" type="text/css" href="easycal.css">
+
+	<style>
+		body{ width: 960px; margin: 0 auto; font-size: 12px; font-family: Arial; box-sizing: border-box;}
+
+	</style>
+</head>
+<body>
+
+	<div class="mycal" style="width:100%;"></div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+	<script type="text/javascript" src="dataset.php"></script>
+	<script type="text/javascript" src="easycal.js"></script>
+
+	<script>
+		$('.mycal').easycal({
+			startDate : '31-10-2014', // OR 31/10/2104
+			timeFormat : 'HH:mm',
+			columnDateFormat : 'dddd, DD MMM',
+			minTime : '07:00:00',
+			maxTime : '31:00:00',
+			slotDuration : 60,
+			timeGranularity : 15,
+			
+			dayClick : function(el, startTime){
+				console.log('Slot selected: ' + startTime);
+			},
+			eventClick : function(eventId){
+				console.log('Event was clicked with id: ' + eventId);
+			},
+
+			events : getEvents(),
+			
+			overlapColor : '#FF0',
+			overlapTextColor : '#000',
+			overlapTitle : 'Multiple'
+		});
+
+
+	</script>
+</body>
+</html>
