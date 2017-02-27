@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2017 at 10:23 AM
--- Server version: 5.7.14
+-- Generation Time: 27.02.2017 klo 10:39
+-- Palvelimen versio: 5.7.14
 -- PHP Version: 5.6.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `register`
+-- Database: `devreg`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Rakenne taululle `categories`
 --
 
 CREATE TABLE `categories` (
@@ -33,7 +33,7 @@ CREATE TABLE `categories` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `categories`
+-- Vedos taulusta `categories`
 --
 
 INSERT INTO `categories` (`id`, `image`, `name`) VALUES
@@ -42,7 +42,7 @@ INSERT INTO `categories` (`id`, `image`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `device`
+-- Rakenne taululle `device`
 --
 
 CREATE TABLE `device` (
@@ -61,7 +61,7 @@ CREATE TABLE `device` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `device`
+-- Vedos taulusta `device`
 --
 
 INSERT INTO `device` (`id`, `device_ean`, `device_type`, `model`, `category`, `description`, `state`, `location`, `owner_id`, `image`, `last_changed`, `changer_owner_id`) VALUES
@@ -70,7 +70,7 @@ INSERT INTO `device` (`id`, `device_ean`, `device_type`, `model`, `category`, `d
 -- --------------------------------------------------------
 
 --
--- Table structure for table `loan`
+-- Rakenne taululle `loan`
 --
 
 CREATE TABLE `loan` (
@@ -79,6 +79,7 @@ CREATE TABLE `loan` (
   `owner_id` int(11) NOT NULL,
   `type` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
+  `reservation_date` datetime DEFAULT NULL,
   `loan_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `return_date` datetime DEFAULT NULL,
@@ -87,10 +88,20 @@ CREATE TABLE `loan` (
   `comment` varchar(1000) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Vedos taulusta `loan`
+--
+
+INSERT INTO `loan` (`id`, `device_id`, `owner_id`, `type`, `username`, `reservation_date`, `loan_date`, `end_date`, `return_date`, `location`, `info`, `comment`) VALUES
+(1, 1, 1, 'LAINATTU', 's333333', NULL, '2017-02-28 00:00:00', '2017-03-02 00:00:00', NULL, 1, 'moro', ''),
+(2, 1, 1, 'LAINATTU', 'd333444', NULL, '2017-02-01 00:00:00', '2017-02-10 00:00:00', NULL, 1, 'aaaaaa', ''),
+(3, 1, 1, 'LAINATTU', 'g788777', NULL, '2017-02-14 00:00:00', '2017-02-15 00:00:00', NULL, 2, 'fffffffff', ''),
+(4, 1, 1, 'VARAUS', 'f333221', '2017-02-15 06:00:00', '2017-02-07 07:30:00', '2017-02-22 16:00:00', NULL, 1, 'varaus', '');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `location`
+-- Rakenne taululle `location`
 --
 
 CREATE TABLE `location` (
@@ -100,7 +111,7 @@ CREATE TABLE `location` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `location`
+-- Vedos taulusta `location`
 --
 
 INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
@@ -109,7 +120,7 @@ INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `owner`
+-- Rakenne taululle `owner`
 --
 
 CREATE TABLE `owner` (
@@ -122,7 +133,7 @@ CREATE TABLE `owner` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `owner`
+-- Vedos taulusta `owner`
 --
 
 INSERT INTO `owner` (`id`, `firstname`, `lastname`, `phone`, `email`, `location`) VALUES
@@ -189,7 +200,7 @@ ALTER TABLE `device`
 -- AUTO_INCREMENT for table `loan`
 --
 ALTER TABLE `loan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `location`
 --
