@@ -1,0 +1,204 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: 27.02.2017 klo 10:39
+-- Palvelimen versio: 5.7.14
+-- PHP Version: 5.6.25
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `devreg`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  `name` varchar(40) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Vedos taulusta `categories`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `device`
+--
+
+CREATE TABLE `device` (
+  `id` int(11) NOT NULL,
+  `device_ean` varchar(100) DEFAULT NULL,
+  `device_type` varchar(100) DEFAULT NULL,
+  `model` varchar(50) NOT NULL,
+  `category` int(11) NOT NULL,
+  `description` varchar(10000) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  `location` int(11) DEFAULT NULL,
+  `owner_id` int(11) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  `last_changed` datetime DEFAULT NULL,
+  `changer_owner_id` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Vedos taulusta `device`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `loan`
+--
+
+CREATE TABLE `loan` (
+  `id` int(11) NOT NULL,
+  `device_model` varchar(40) NOT NULL,
+  `owner_id` int(11) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `reservation_date` datetime DEFAULT NULL,
+  `loan_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `return_date` datetime DEFAULT NULL,
+  `location` int(11) DEFAULT NULL,
+  `info` varchar(1000) DEFAULT NULL,
+  `comment` varchar(1000) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Vedos taulusta `loan`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `location`
+--
+
+CREATE TABLE `location` (
+  `id` int(11) NOT NULL,
+  `postcode` varchar(20) NOT NULL,
+  `address` varchar(200) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Vedos taulusta `location`
+--
+
+INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
+(1, '70000', 'Opistotie 2, KUOPIO'), (2, '70100', 'Microkatu 1, KUOPIO');
+
+-- --------------------------------------------------------
+
+--
+-- Rakenne taululle `owner`
+--
+
+CREATE TABLE `owner` (
+  `id` int(11) NOT NULL,
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `location` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Vedos taulusta `owner`
+--
+
+INSERT INTO `owner` (`id`, `firstname`, `lastname`, `phone`, `email`, `location`) VALUES
+(1, 'Pasi', 'Viheraho', '232343232', 'pasi.viheraho@suomi.net', '1'), (2, 'Veijo', 'Pitkänen', '232343232', 'pasi.viheraho@suomi.net', '1');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `device`
+--
+ALTER TABLE `device`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_ean` (`device_ean`),
+  ADD KEY `owner_id_fk` (`owner_id`),
+  ADD KEY `category_id_fk` (`category`),
+  ADD KEY `device_location_fk` (`location`),
+  ADD KEY `changed_fk` (`changer_owner_id`);
+
+--
+-- Indexes for table `loan`
+--
+ALTER TABLE `loan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `loan_device_fk` (`device_model`),
+  ADD KEY `loan_location_fk` (`location`);
+
+--
+-- Indexes for table `location`
+--
+ALTER TABLE `location`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `address` (`address`);
+
+--
+-- Indexes for table `owner`
+--
+ALTER TABLE `owner`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location_fk` (`location`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `device`
+--
+ALTER TABLE `device`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `loan`
+--
+ALTER TABLE `loan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `location`
+--
+ALTER TABLE `location`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `owner`
+--
+ALTER TABLE `owner`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
