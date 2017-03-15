@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 01, 2017 at 08:59 AM
+-- Generation Time: Mar 15, 2017 at 08:05 AM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `devreg2`
+-- Database: `devreg`
 --
 
 -- --------------------------------------------------------
@@ -31,13 +31,6 @@ CREATE TABLE `category` (
   `image` varchar(100) DEFAULT NULL,
   `category_name` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `category`
---
-
-INSERT INTO `category` (`id`, `image`, `category_name`) VALUES
-(2, 'asd', 'faceasd');
 
 -- --------------------------------------------------------
 
@@ -69,6 +62,7 @@ CREATE TABLE `device` (
 CREATE TABLE `loan` (
   `id` int(11) NOT NULL,
   `device_id` int(11) DEFAULT NULL,
+  `device_model` varchar(100) DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
   `loan_type` varchar(1000) NOT NULL,
   `username` varchar(50) NOT NULL,
@@ -92,13 +86,6 @@ CREATE TABLE `location` (
   `postcode` varchar(100) NOT NULL,
   `address` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `location`
---
-
-INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
-(3, '444444', 'kuopio');
 
 -- --------------------------------------------------------
 
@@ -130,6 +117,7 @@ ALTER TABLE `category`
 --
 ALTER TABLE `device`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_ean` (`device_ean`),
   ADD KEY `device_ibfk_1` (`category`),
   ADD KEY `location` (`location`),
   ADD KEY `owner_id` (`owner_id`);
