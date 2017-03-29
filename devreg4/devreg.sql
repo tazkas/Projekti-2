@@ -1,0 +1,226 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Mar 15, 2017 at 08:47 AM
+-- Server version: 5.7.14
+-- PHP Version: 5.6.25
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `devreg`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `id` int(11) NOT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `category_name` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `image`, `category_name`) VALUES
+(3, 'category_default_other_2.jpg', 'muut');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device`
+--
+
+CREATE TABLE `device` (
+  `id` int(11) NOT NULL,
+  `device_ean` varchar(50) NOT NULL,
+  `device_type` varchar(1000) DEFAULT NULL,
+  `model` varchar(50) NOT NULL,
+  `category` int(11) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `state` varchar(50) NOT NULL,
+  `location` int(11) DEFAULT NULL,
+  `owner_id` int(11) DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
+  `last_changed` datetime DEFAULT NULL,
+  `changer_owner_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loan`
+--
+
+CREATE TABLE `loan` (
+  `id` int(11) NOT NULL,
+  `loan_group` varchar(100) NOT NULL,
+  `device_id` int(11) DEFAULT NULL,
+  `device_model` varchar(100) DEFAULT NULL,
+  `owner_id` int(11) DEFAULT NULL,
+  `loan_type` varchar(1000) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `reservation_date` datetime DEFAULT NULL,
+  `loan_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `return_date` datetime DEFAULT NULL,
+  `location` int(11) DEFAULT NULL,
+  `info` varchar(1000) DEFAULT NULL,
+  `comments` varchar(2000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `location`
+--
+
+CREATE TABLE `location` (
+  `id` int(11) NOT NULL,
+  `postcode` varchar(100) NOT NULL,
+  `address` varchar(1000) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `location`
+--
+
+INSERT INTO `location` (`id`, `postcode`, `address`) VALUES
+(4, '70200', 'Opistotie 2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `owner`
+--
+
+CREATE TABLE `owner` (
+  `id` int(11) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `location` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `owner`
+--
+
+INSERT INTO `owner` (`id`, `firstname`, `lastname`, `phone`, `email`, `location`) VALUES
+(3, 'Kalle', 'Kehveli', '040123456', 'kalle.kehvelisdjkhq8wy80', 4);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `device`
+--
+ALTER TABLE `device`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `device_ean` (`device_ean`),
+  ADD KEY `device_ibfk_1` (`category`),
+  ADD KEY `location` (`location`),
+  ADD KEY `owner_id` (`owner_id`);
+
+--
+-- Indexes for table `loan`
+--
+ALTER TABLE `loan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `device_id` (`device_id`),
+  ADD KEY `location` (`location`),
+  ADD KEY `owner_id` (`owner_id`);
+
+--
+-- Indexes for table `location`
+--
+ALTER TABLE `location`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `owner`
+--
+ALTER TABLE `owner`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `location` (`location`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `device`
+--
+ALTER TABLE `device`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `loan`
+--
+ALTER TABLE `loan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `location`
+--
+ALTER TABLE `location`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `owner`
+--
+ALTER TABLE `owner`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `device`
+--
+ALTER TABLE `device`
+  ADD CONSTRAINT `device_ibfk_1` FOREIGN KEY (`category`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `device_ibfk_2` FOREIGN KEY (`location`) REFERENCES `location` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `device_ibfk_3` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `loan`
+--
+ALTER TABLE `loan`
+  ADD CONSTRAINT `loan_ibfk_1` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `loan_ibfk_2` FOREIGN KEY (`location`) REFERENCES `location` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `loan_ibfk_3` FOREIGN KEY (`owner_id`) REFERENCES `owner` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `owner`
+--
+ALTER TABLE `owner`
+  ADD CONSTRAINT `owner_ibfk_1` FOREIGN KEY (`location`) REFERENCES `location` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
